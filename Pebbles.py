@@ -27,11 +27,11 @@ class Pebbles:
             self.verbose=verbose0
             # let's figure out the type of game:
             if modifier=='nothing':
-                print "We are running a (" + str(self.game1)+ "," + str(self.game2) + ") game."
+                print("We are running a (" + str(self.game1)+ "," + str(self.game2) + ") game.")
                 # that's a (x,3) or (x,3) game 
                 if (self.game2==3) or (self.game2==2):
                     if (self.game2==2):
-                        print "Warning: (2,x) pebble game, using common pebble game code, but results may vary"
+                        print("Warning: (2,x) pebble game, using common pebble game code, but results may vary")
                     # if we have a (2,3) game, simply use the contacts as is for the pebble game
                     if (self.game1==2):
                         self.ncon2=conf.ncon
@@ -41,9 +41,9 @@ class Pebbles:
                     elif (self.game1==3):
                         self.AddFrictionalBonds(conf)
                 else:
-                    print "Atypical pebble game, stopping for now as unclear meaning. If you really must, construct a new modifier type to deal with this game and any extra / deleted contacts."
+                    print("Atypical pebble game, stopping for now as unclear meaning. If you really must, construct a new modifier type to deal with this game and any extra / deleted contacts.")
             else:
-                print "Modified pebble games (2nd neighbours, or single contacts, or deleted contacts). Not implemented yet, please construct new functions similar to AddFrictionalBonds(conf) to modify contact lists."
+                print("Modified pebble games (2nd neighbours, or single contacts, or deleted contacts). Not implemented yet, please construct new functions similar to AddFrictionalBonds(conf) to modify contact lists.")
             # Reverse connection object: necessary for marking both rigid clusters and overconstrained regions
             self.conmat=[[] for _ in range(self.N)]
             for k in range(self.ncon2):
@@ -52,15 +52,15 @@ class Pebbles:
                     self.conmat[i].append(k)
                     self.conmat[j].append(k)
                     if self.verbose:
-                            print 'Contact ' + str(k) + ' with particles ' + str(i) + ' ' + str(j)
+                            print('Contact ' + str(k) + ' with particles ' + str(i) + ' ' + str(j))
                         
          
         ### ===================== Functions to add extra bonds or otherwise modify the contact list =============
         # Frictional bonds based on mobilisation
         def AddFrictionalBonds(self,conf):
             self.ncon2=conf.ncon+np.sum(conf.fullmobi==0)
-            print conf.ncon
-            print self.ncon2
+            print(conf.ncon)
+            print(self.ncon2)
 
             self.Ifull=[0]*self.ncon2
             self.Jfull=[0]*self.ncon2
@@ -74,7 +74,7 @@ class Pebbles:
                             self.Ifull[conf.ncon+jj]=conf.I[k]
                             self.Jfull[conf.ncon+jj]=conf.J[k]
                             jj+=1
-            print("Sizes of full contact objects:" + str(len(self.Ifull)))
+            print(("Sizes of full contact objects:" + str(len(self.Ifull))))
             
         
         # Here go further methods to either add bonds, remove bonds or modify the connectivity
@@ -153,7 +153,7 @@ class Pebbles:
 				self.enlarge_over(pebblescopy,marked,i,j)
 				#print('contact ' + str(k) + ' couldn\'t be added') 
 				if (self.verbose):
-					print('contact ' + str(k) + ' couldn\'t be added') 
+					print(('contact ' + str(k) + ' couldn\'t be added')) 
 				self.fail+=1
 		## print out number of redundant bonds and number of free pebbles
 		# number of free pebbles = number of -1 still in pebbles. The other ones contain the contact they're placed on
@@ -161,8 +161,8 @@ class Pebbles:
 		self.over_path(marked)
 		self.freepeb=np.sum(self.pebbles==-1)
 		print('Statistics:')
-		print('Number of free pebbles: ' + str(self.freepeb))
-		print('Number of failed contacts: ' + str(self.fail))
+		print(('Number of free pebbles: ' + str(self.freepeb)))
+		print(('Number of failed contacts: ' + str(self.fail)))
 		
 
 	# ============================= Rigid clusters =======================================	
@@ -201,7 +201,7 @@ class Pebbles:
 				stopthis=False
 				if len(bonds)>1:
 					if self.verbose:
-						print "Checking over double bonds" + str(bonds)
+						print("Checking over double bonds" + str(bonds))
 					k2=bonds[0]
 					if k2==k:
 						k2=bonds[1]
@@ -210,12 +210,12 @@ class Pebbles:
 					if self.cluster[k2]!=-1:
 						stopthis=True
 						self.cluster[k]=self.cluster[k2]
-						print "Double bond " + str(k) + " neighbour of " + str(k2) + " was also labeled cluster " + str(self.cluster[k])
-						print "Add one to cluster length " + str(k)
+						print("Double bond " + str(k) + " neighbour of " + str(k2) + " was also labeled cluster " + str(self.cluster[k]))
+						print("Add one to cluster length " + str(k))
 						clusterall[self.cluster[k2]]+=1
 				if stopthis==False:
 					if self.verbose:
-						print('contact ' + str(k))
+						print(('contact ' + str(k)))
 					# We label particles (not bonds!) rigid and floppy based on whether a pebble search fails or succeeds,
 					# the whole thing recursively, until either the rigid area is surrounded by floppy sites, or no particles
 					# remain accessible through the contact network.
@@ -225,7 +225,7 @@ class Pebbles:
 					# We start the test with the two original sites, and proceed only if neither yields a pebble
 					self.cidx+=1
 					if self.verbose:
-						print('Rigid cluster label # ' + str(self.cidx))
+						print(('Rigid cluster label # ' + str(self.cidx)))
 					marked = [False for _ in range(self.N)]
 					rigid = [False for _ in range(self.N)]
 					# gather 3 pebbles at the site
@@ -236,7 +236,7 @@ class Pebbles:
 					for l in range(self.game2):
 						result=self.enlarge_cover(pebblescopy,i,j)
 						if result==1:
-							print("Error: no " + str(self.game2) + "global DOF pebbles in rigidity search at contact" + str(k))
+							print(("Error: no " + str(self.game2) + "global DOF pebbles in rigidity search at contact" + str(k)))
 					
 					# First check the two adjoining particles
 					done=True
@@ -262,17 +262,17 @@ class Pebbles:
 								done=False
 					cluslen=len(np.nonzero(rigid)[0])
 					if (cluslen>0):
-						print('Cluster length ' + str(cluslen))
+						print(('Cluster length ' + str(cluslen)))
 						ctry=self.rig_path(marked,rigid,True)
 						if ctry!=self.cidx:
-							print "WARNING: Found a (part) duplicate cluster. Merge length here with cluster " + str(ctry)
+							print("WARNING: Found a (part) duplicate cluster. Merge length here with cluster " + str(ctry))
 							cidxstore=self.cidx
 							self.cidx=ctry
 							ctry=self.rig_path(marked,rigid,False)
 							self.cidx=cidxstore
 						else:
 							if self.verbose:
-								print('Found new rigid cluster! # ' + str(self.cidx))	
+								print(('Found new rigid cluster! # ' + str(self.cidx)))	
 						cluslenBonds=len([val for val in self.cluster if val==ctry])
 						clusterall.append(cluslen)
 						clusterallBonds.append(cluslenBonds)
@@ -283,12 +283,12 @@ class Pebbles:
 							self.maxidx=ctry
 					else:
 						self.cidx-=1
-                print "Cluster sizes (particles)"
-                print clusterall
-                print "Cluster sizes (bonds)"
-                print clusterallBonds
-                print "Cluster labels"
-                print clusteridx
+                print("Cluster sizes (particles)")
+                print(clusterall)
+                print("Cluster sizes (bonds)")
+                print(clusterallBonds)
+                print("Cluster labels")
+                print(clusteridx)
                 # Note: Further rigid cluster analysis has been moved to Analysis class
                 return self.cidx, clusterall, clusterallBonds, clusteridx, BigCluster
 		
@@ -329,9 +329,9 @@ class Pebbles:
 			rigid[i]=marktype
 			if self.verbose:
 				if marktype:
-					print('Marked particle ' + str(i) + ' ' + ' rigid')
+					print(('Marked particle ' + str(i) + ' ' + ' rigid'))
 				else:
-					print('Marked particle ' + str(i) + ' ' + ' floppy')			
+					print(('Marked particle ' + str(i) + ' ' + ' floppy'))			
 		else:
 			while (path[i]!=-1):
 				l=path[i]
@@ -339,9 +339,9 @@ class Pebbles:
 				rigid[i]=marktype
 				if self.verbose:
 					if marktype:
-						print('Marked particle ' + str(i) + ' ' + ' rigid')
+						print(('Marked particle ' + str(i) + ' ' + ' rigid'))
 					else:
-						print('Marked particle ' + str(i) + ' ' + ' floppy')
+						print(('Marked particle ' + str(i) + ' ' + ' floppy'))
 				i=l		
 	# Close cousin to identify overconstrained regions		
 	def mark_path_over(self,marked,path,i):
@@ -361,7 +361,7 @@ class Pebbles:
 	def rig_path(self,marked,rigid,tentative):
 		for i in np.nonzero(marked)[0]:
 			if self.verbose:
-				print('marked particle ' + str(i))
+				print(('marked particle ' + str(i)))
 			if (rigid[i]):
 				links=self.conmat[i]
 				for c in links:
@@ -372,16 +372,16 @@ class Pebbles:
 					if (marked[u] and rigid[u]):
 						if tentative:
 							if self.cluster[c]>-1 and self.cluster[c]!=self.cidx:
-								print "WARNING!! Attempting to relabel a *bond* from " + str(self.cluster[c])
+								print("WARNING!! Attempting to relabel a *bond* from " + str(self.cluster[c]))
 								return self.cluster[c]
 						self.cluster[c]=self.cidx
 						if self.verbose:
-							print('Added bond ' + str(c)+ ' to cluster ' + str(self.cidx))
+							print(('Added bond ' + str(c)+ ' to cluster ' + str(self.cidx)))
 				if self.verbose:
 					print('rigid')
 				self.pcluster[i].append(self.cidx)
 				if self.verbose:
-					print('Added particle ' + str(i) +' to cluster ' + str(self.cidx))
+					print(('Added particle ' + str(i) +' to cluster ' + str(self.cidx)))
 		return self.cidx
 				
 							
